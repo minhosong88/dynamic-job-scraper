@@ -16,7 +16,7 @@ This project provides a tool for scraping job listings from Wanted.co.kr based o
 
     ```bash
     git clone https://github.com/minhosong88/dynamic-scraper.git
-    cd wanted-job-search
+    cd dynamic-scraper
     ```
 
 2. Create a virtual environment:
