@@ -2,7 +2,7 @@ from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 import time
 import csv
-from job_data import JobData
+from extractors.job_data import JobData
 
 
 class WantedJobSearch:
@@ -11,8 +11,12 @@ class WantedJobSearch:
         self.keywords = []
 
     def add_keyword(self, keyword):
-        keywords = self.keywords.append(keyword)
-        return keywords
+        self.keywords.append(keyword.strip())
+
+    def add_keywords_from_input(self, keyword):
+        keywords = keyword.split(',')
+        for keyword in keywords:
+            self.add_keyword(keyword)
 
     def run_playwright(self, url):
         with sync_playwright() as p:
@@ -28,7 +32,7 @@ class WantedJobSearch:
             browser.close()
         return content
 
-    def scrape_all_keywords(self, keyword):
+    def scrape_keyword(self, keyword):
         jobs_db = []
         url = f"https://www.wanted.co.kr/search?query={keyword}&tab=position"
         content = self.run_playwright(url)
@@ -46,10 +50,19 @@ class WantedJobSearch:
 
         return jobs_db
 
-    def save_to_excel(self):
+    def extract_wanted_jobs(self, keyword):
+        self.add_keywords_from_input(keyword)
+        jobs_db = []
         for keyword in self.keywords:
-            keyword_jobs = self.scrape_all_keywords(keyword)
-            with open(f"{keyword}_jobs.csv", mode="w", encoding="utf-8") as file:
+            keyword_jobs = self.scrape_keyword(keyword)
+            jobs_db.extend(keyword_jobs)
+        return jobs_db
+
+    def save_to_csv(self, keyword):
+        self.add_keywords_from_input(keyword)
+        for keyword in self.keywords:
+            keyword_jobs = self.scrape_keyword(keyword)
+            with open(f"wanted_{keyword}_jobs.csv", mode="w", encoding="utf-8") as file:
                 writer = csv.writer(file)
                 writer.writerow(["Title", "Company", "Reward", "Link"])
                 for job in keyword_jobs:
