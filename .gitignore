@@ -1,3 +1,4 @@
 myenv
-__pycache__
-.extractors/__pycache__
+__pycache__/
+extractors/__pycache__/
+*.pyc

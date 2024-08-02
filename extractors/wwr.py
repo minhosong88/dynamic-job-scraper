@@ -31,7 +31,7 @@ class WWRJobSearch:
                 title = job.find("span", class_="title").text
                 company, position, region = job.find_all(
                     "span", class_="company")
-                url = job.find(
+                link = job.find(
                     "div", class_="tooltip--flag-logo").next_sibling["href"]
                 company = company.text
                 position = position.text
@@ -40,7 +40,7 @@ class WWRJobSearch:
                 try:
                     title = job.find("span", class_="title").text
                     company, position = job.find_all("span", class_="company")
-                    url = job.find(
+                    link = job.find(
                         "div", class_="tooltip--flag-logo").next_sibling["href"]
                     company = company.text
                     position = position.text
@@ -48,7 +48,7 @@ class WWRJobSearch:
                 except ValueError:
                     continue
             job_data = JobDataWWR(
-                title, company, position, region, url).to_list()
+                title, company, position, region, link).to_list()
             all_jobs.append(job_data)
         return all_jobs
 
@@ -65,15 +65,16 @@ class WWRJobSearch:
         jobs = [
             job for jobs_section in jobs_sections for job in jobs_section.find_all("li")]
         filtered_jobs = [
-            job for job in jobs if "view_all" not in job.get("class", [])]
+            job for job in jobs if "view-all" not in job.get("class", [])]
 
         for job in filtered_jobs:
             # There are jobs that do not contain region information
+
             try:
                 title = job.find("span", class_="title").text
                 company, position, region = job.find_all(
                     "span", class_="company")
-                url = job.find(
+                link = job.find(
                     "div", class_="tooltip--flag-logo").next_sibling["href"]
                 company = company.text
                 position = position.text
@@ -83,7 +84,7 @@ class WWRJobSearch:
                     title = job.find("span", class_="title").text
                     company, position = job.find_all(
                         "span", class_="company")
-                    url = job.find(
+                    link = job.find(
                         "div", class_="tooltip--flag-logo").next_sibling["href"]
                     company = company.text
                     position = position.text
@@ -91,7 +92,7 @@ class WWRJobSearch:
                 except ValueError:
                     continue
             job_data = JobDataWWR(
-                title, company, position, region, url).to_list()
+                title, company, position, region, link).to_list()
             all_jobs.append(job_data)
         return all_jobs
 

@@ -14,7 +14,7 @@ def home():
 def search():
     keyword = request.args.get("keyword")
     wanted = WantedJobSearch().extract_wanted_jobs(keyword)
-    wwr = WWRJobSearch.extract_wwr_jobs_keyword(keyword)
+    wwr = WWRJobSearch().extract_wwr_jobs_keyword(keyword)
     jobs = wanted + wwr
 
     return render_template("search.html", keyword=keyword, jobs=jobs)
