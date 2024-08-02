@@ -12,11 +12,6 @@ class WWRJobSearch:
     def add_keyword(self, keyword):
         self.keywords.append(keyword.strip())
 
-    def add_keywords_from_input(self, keyword):
-        keywords = keyword.split(',')
-        for keyword in keywords:
-            self.add_keyword(keyword)
-
     def scrape_page(self, url):
         all_jobs = []
         response = requests.get(url)
@@ -52,7 +47,7 @@ class WWRJobSearch:
             all_jobs.append(job_data)
         return all_jobs
 
-    def keyword_serch(self, keyword):
+    def scrape_keyword(self, keyword):
         base_url = "https://weworkremotely.com/remote-jobs/search?&term="
         response = requests.get(f"{base_url}{keyword}")
         if response.status_code != 200:
@@ -95,14 +90,6 @@ class WWRJobSearch:
                 title, company, position, region, link).to_list()
             all_jobs.append(job_data)
         return all_jobs
-
-    def extract_wwr_jobs_keyword(self, keyword):
-        self.add_keywords_from_input(keyword)
-        jobs_db = []
-        for keyword in self.keywords:
-            keyword_jobs = self.keyword_serch(keyword)
-            jobs_db.extend(keyword_jobs)
-        return jobs_db
 
     def get_pages(self, url):
         response = requests.get(url)

@@ -10,14 +10,26 @@ def home():
     return render_template("home.html")
 
 
+db = {}
+
+
 @app.route("/search")
 def search():
     keyword = request.args.get("keyword")
-    wanted = WantedJobSearch().extract_wanted_jobs(keyword)
-    wwr = WWRJobSearch().extract_wwr_jobs_keyword(keyword)
-    jobs = wanted + wwr
-
-    return render_template("search.html", keyword=keyword, jobs=jobs)
+    keywords = keyword.split(",")
+    formatted_keywords = ", ".join([keyword.strip() for keyword in keywords])
+    all_jobs = []
+    for keyword in keywords:
+        keyword = keyword.strip()
+        if keyword in db:
+            jobs = db[keyword]
+        else:
+            wanted = WantedJobSearch().scrape_keyword(keyword)
+            wwr = WWRJobSearch().scrape_keyword(keyword)
+            jobs = wanted + wwr
+            db[keyword] = jobs
+        all_jobs.extend(jobs)
+    return render_template("search.html", keyword=formatted_keywords, jobs=all_jobs)
 
 
 app.run(host='0.0.0.0', port=8080, debug=True)
