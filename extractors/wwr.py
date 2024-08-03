@@ -12,6 +12,11 @@ class WWRJobSearch:
     def add_keyword(self, keyword):
         self.keywords.append(keyword.strip())
 
+    def add_keywords_from_input(self, keyword):
+        keywords = keyword.split(',')
+        for keyword in keywords:
+            self.add_keyword(keyword)
+
     def scrape_page(self, url):
         all_jobs = []
         response = requests.get(url)
@@ -113,14 +118,14 @@ class WWRJobSearch:
     def keyword_search_save_to_csv(self, keyword):
         self.add_keywords_from_input(keyword)
         for keyword in self.keywords:
-            keyword_jobs = self.keyword_serch(keyword)
+            keyword_jobs = self.scrape_keyword(keyword)
             if not keyword_jobs:
                 continue
             try:
                 with open(f"wwr_{keyword}_jobs.csv", mode="w", encoding="utf-8") as file:
                     writer = csv.writer(file)
                     writer.writerow(
-                        ["Title", "Company", "Position", "Region", "Link"])
+                        ["Position", "Company", "Position", "Region", "Link"])
                     for job in keyword_jobs:
                         writer.writerow(job)
             except IOError as e:

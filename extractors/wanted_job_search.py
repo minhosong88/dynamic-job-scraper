@@ -13,6 +13,11 @@ class WantedJobSearch:
     def add_keyword(self, keyword):
         self.keywords.append(keyword.strip())
 
+    def add_keywords_from_input(self, keyword):
+        keywords = keyword.split(',')
+        for keyword in keywords:
+            self.add_keyword(keyword)
+
     def run_playwright(self, url):
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=False)
@@ -51,6 +56,6 @@ class WantedJobSearch:
             keyword_jobs = self.scrape_keyword(keyword)
             with open(f"wanted_{keyword}_jobs.csv", mode="w", encoding="utf-8") as file:
                 writer = csv.writer(file)
-                writer.writerow(["Title", "Company", "Reward", "Link"])
+                writer.writerow(["Position", "Company", "Reward", "Link"])
                 for job in keyword_jobs:
                     writer.writerow(job)

@@ -9,16 +9,25 @@
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
 		/>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css"
+		/>
 	</head>
 	<body>
 		<main class="container">
 			<h1>Job Scraper</h1>
+			<form action="/export">
+				<button class="pico-background-red-150">
+					Click to Go to Saved Search
+				</button>
+			</form>
 			<h4>What job do you want?</h4>
 			<form action="/search">
 				<input
 					type="text"
 					name="keyword"
-					placeholder="Write a keyword please"
+					placeholder="Programming language. Comma separated. Multiple search possible. Example) python, java, nextjs"
 				/>
 				<button>Search</button>
 			</form>

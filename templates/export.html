@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Export Jobs</title>
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css"
+    />
+    <style>
+        #save-button {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <h1>Export Jobs</h1>
+        <a href="/">Back to Search</a>
+        {% if error %}
+        <div class="alert alert-warning">
+            {{ error }}
+        </div>
+        {% elif success %}
+        <div class="alert alert-success">
+            {{ success }}
+        </div>
+        {% endif %}
+        <h4>Select a keyword to export jobs:</h4>
+        <form action="/export">
+            <label for="keyword">Choose a keyword:</label>
+            <select id="keyword" name="keyword">
+                {% for keyword in db %}
+                <option value="{{ keyword }}" {% if selected_keyword == keyword %}selected{% endif %}>{{ keyword }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Export</button>
+
+
+        {% if selected_keyword %}
+        </form>
+        <form action="/save" >
+            <input type="hidden" name="keyword" value="{{ selected_keyword }}">
+            <button id="save-button" type="submit" class="pico-background-orange-350">Save</button>
+        </form>
+        <h2>Searching Results: "{{ selected_keyword }}"</h2>
+        <figure>
+            <table role="grid">
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Company</th>
+                        <th>Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in jobs %}
+                    <tr>
+                        <td>{{ job[0] }}</td>
+                        <td>{{ job[1] }}</td>
+                        <td>
+                            <a href="{{ job[-1] }}" target="_blank"> Apply now &rarr; </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </figure>
+
+        {% endif %}
+
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if there are search results and show the save button if there are
+            const searchResults = {{ jobs|length }};
+            if (searchResults > 0) {
+                document.getElementById('save-button').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
