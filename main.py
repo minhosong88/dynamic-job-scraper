@@ -1,7 +1,7 @@
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, redirect, render_template, request, send_file, url_for
 from extractors.wwr import WWRJobSearch
 from extractors.wanted_job_search import WantedJobSearch
-from file import save_to_file
+from file import save_to_file, save_file_to_memory
 
 app = Flask("JobScraper")
 
@@ -69,9 +69,12 @@ def save():
         error_message = f"{keyword} Not In Database."
         return redirect(url_for("export", error=error_message))
 
-    save_to_file(keyword, jobs=all_jobs)
-    success_message = f"{keyword} Jobs have been saved to {keyword}_jobs.csv"
-    return redirect(url_for("export", success=success_message))
+    try:
+        memory_file = save_file_to_memory(keyword, all_jobs)
+        return send_file(memory_file, mimetype='text/csv', as_attachment=True, download_name=f'{keyword}.csv')
+    except Exception as e:
+        error_message = f"An error occured while generating the file:{str(e)}"
+        return redirect(url_for("export", error=error_message))
 
 
 app.run(host='0.0.0.0', port=8080, debug=True)
