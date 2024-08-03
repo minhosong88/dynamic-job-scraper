@@ -13,6 +13,7 @@ Welcome to the **Dynamic Job Scraper** project! This tool is designed to streaml
 - **In-Memory File Handling**: Efficient in-memory file creation and handling.
 
 ## Project Structure
+```plain text
 QuantumScraper/
 │
 ├── extractors/
@@ -31,6 +32,7 @@ QuantumScraper/
 ├── requirements.txt
 ├── .gitignore
 └── .gitattributes
+```
 
 ### Extractors
 
