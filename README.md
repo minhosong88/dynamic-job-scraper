@@ -128,7 +128,7 @@ requests==2.25.1
 3. Use the home page to search for job listings by entering keywords separated by commas.
 
 4. View and export the search results.
-5. 
+
 ## Contributing
 
 Contributions are welcome! If you have suggestions for improvements or new features, feel free to open an issue or submit a pull request. We appreciate your help in enhancing this project.
