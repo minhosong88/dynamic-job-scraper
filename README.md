@@ -4,6 +4,18 @@
 
 Welcome to the **Dynamic Job Scraper** project! This tool is designed to streamline your job search by automatically extracting and compiling job listings from various online sources. Whether you are looking for remote opportunities or local positions, this scraper will save you time and effort by consolidating job data into easy-to-use CSV files.
 
+## Table of Contents
+- [Project Structure](#project-structure)
+  - [Extractors](#extractors)
+  - [Templates](#templates)
+  - [Core Components](#core-components)
+- [How It Works](#how-it-works)
+  - [Classes and Functions](#classes-and-functions)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [Contact Information](#contact-information)
+
 ## Features
 
 - **Multiple Keyword Search**: Search for job listings using multiple keywords separated by commas.
